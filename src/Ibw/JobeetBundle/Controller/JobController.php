@@ -4,6 +4,7 @@ namespace Ibw\JobeetBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 use Ibw\JobeetBundle\Entity\Job;
@@ -152,12 +153,14 @@ class JobController extends Controller
         }
 
         $deleteForm = $this->createDeleteForm($id);
+        $favouriteForm = $this->createFavouriteForm($id);
 
         return $this->render('IbwJobeetBundle:Job:show.html.twig', array(
-            'entity'        => $entity,
-            'thumb_small'   => $entity->getLogoThumbnail('thumb_small'),
-            'thumb_medium'  => $entity->getLogoThumbnail('thumb_medium'),
-            'delete_form'   => $deleteForm->createView(),
+            'entity'            => $entity,
+            'thumb_small'       => $entity->getLogoThumbnail('thumb_small'),
+            'thumb_medium'      => $entity->getLogoThumbnail('thumb_medium'),
+            'delete_form'       => $deleteForm->createView(),
+            'favourite_form'    => $favouriteForm->createView(),
         ));
     }
 
@@ -178,8 +181,6 @@ class JobController extends Controller
         if ($entity->getIsActivated()) {
             //throw $this->createNotFoundException('Job is activated and cannot be edited.');
         }
-        //echo '<pre>';
-        //\Doctrine\Common\Util\Debug::dump($entity, 2); exit;
 
         $editForm = $this->createEditForm($entity);
         $deleteForm = $this->createDeleteForm($token);
@@ -389,6 +390,80 @@ class JobController extends Controller
         ;
     }
 
+    private function createFavouriteForm($id)
+    {
+        // get favourite jobs from cookies
+        $cookies = $this->getRequest()->cookies;
+        $jobs = $cookies->get('favourite_jobs');
+        $jobs = $jobs ? unserialize($jobs) : array();
+
+        $entity = array(
+            'id' => $id
+        );
+
+        $form = $this->createFormBuilder($entity, array(
+            'action' => $this->generateUrl('ibw_job_favourite', array('id' => $id)),
+            'method' => 'POST',
+        ));
+
+        $form->add('id', 'hidden');
+
+        if (in_array($id, $jobs)) {
+            $form->add('unfavourite', 'submit', array('label' => 'Undo Favourite'));
+        } else {
+            $form->add('favourite', 'submit', array('label' => 'Favourite'));
+        }
+
+        return $form->getForm();
+        ;
+    }
+
+    public function favouriteAction(Request $request, $id)
+    {
+        $form = $this->createFavouriteForm($id);
+        $form->handleRequest($request);
+
+        if ($form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $entity = $em->getRepository('IbwJobeetBundle:Job')->findOneById($id);
+        }
+
+        if (!$entity) {
+            throw $this->createNotFoundException('Unable to find Job entity.');
+        }
+
+        // get cookies
+        $cookies = $request->cookies;
+        $jobs = $cookies->get('favourite_jobs', array());
+        $jobs = $jobs ? unserialize($jobs) : array();
+        $cookieExpiry = time() + (86400 * 30);
+
+        if ($form->has('favourite') && $form->get('favourite')->isClicked() && !in_array($id, $jobs)) {
+            // only if it haven't been favourited
+            array_push($jobs, $id);
+            $response = new Response();
+            $response->headers->setCookie(new Cookie('favourite_jobs', serialize($jobs), $cookieExpiry)); // with 30-day expiry
+            $response->send();
+        } elseif ($form->has('unfavourite') && $form->get('unfavourite')->isClicked() && in_array($id, $jobs)) {
+            // only if it have been favourited
+            unset($jobs[array_search($id, $jobs)]);
+            $response = new Response();
+            if (count($jobs)) {
+                $response->headers->setCookie(new Cookie('favourite_jobs', serialize($jobs), $cookieExpiry)); // with 30-day expiry
+            } else {
+                $response->headers->clearCookie('favourite_jobs');
+            }
+            $response->send();
+        }
+
+        return $this->redirect($this->generateUrl('ibw_job_show', array(
+            'company' => $entity->getCompanySlug(),
+            'location' => $entity->getLocationSlug(),
+            'id' => $entity->getId(),
+            'position' => $entity->getPositionSlug()
+        )));
+    }
+
     public function searchAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
@@ -413,27 +488,4 @@ class JobController extends Controller
 
         return $this->render('IbwJobeetBundle:Job:search.html.twig', array('jobs' => $jobs));
     }
-
-    /**
-     * Write a thumbnail image using the LiipImagineBundle
-     *
-     * @param Document $document an Entity that represents an image in the database
-     * @param string $filter the Imagine filter to use
-     */
-//    private function writeThumbnail($document, $filter) {
-//        $path = $document->getWebPath();                                // domain relative path to full sized image
-//        $tpath = $document->getRootDir().$document->getThumbPath();     // absolute path of saved thumbnail
-//
-//        $container = $this->container;                                  // the DI container
-//        $dataManager = $container->get('liip_imagine.data.manager');    // the data manager service
-//        $filterManager = $container->get('liip_imagine.filter.manager');// the filter manager service
-//
-//        $image = $dataManager->find($filter, $path);                    // find the image and determine its type
-//        $response = $filterManager->get($this->getRequest(), $filter, $image, $path); // run the filter
-//        $thumb = $response->getContent();                               // get the image from the response
-//
-//        $f = fopen($tpath, 'w');                                        // create thumbnail file
-//        fwrite($f, $thumb);                                             // write the thumbnail
-//        fclose($f);                                                     // close the file
-//    }
 }
