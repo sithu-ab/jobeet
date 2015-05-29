@@ -239,7 +239,7 @@ class JobControllerTest extends WebTestCase
         $this->assertTrue(0 < $query->getSingleScalarResult());
 
         $crawler = $client->request('GET', '/job/new');
-        $form = $crawler->selectButton('Preview your job')->form(array(
+        $form = $crawler->selectButton('Preview Your Job')->form(array(
             $this->prefix.'job[company]'    => 'Sensio Labs',
             $this->prefix.'job[position]'   => 'Developer',
             $this->prefix.'job[location]'   => 'Atlanta, USA',
@@ -260,11 +260,11 @@ class JobControllerTest extends WebTestCase
         $this->assertTrue($crawler->filter('#'.$this->prefix.'job_email')->siblings()->first()->filter('.error_list')->count() == 1);
     }
 
-    public function createJob($values = array())
+    public function createJob($values = array(), $publish = false)
     {
         $client = static::createClient();
         $crawler = $client->request('GET', '/job/new');
-        $form = $crawler->selectButton('Preview your job')->form(array_merge(array(
+        $form = $crawler->selectButton('Preview Your Job')->form(array_merge(array(
             $this->prefix.'job[company]'      => 'Sensio Labs',
             $this->prefix.'job[url]'          => 'http://www.sensio.com/',
             $this->prefix.'job[position]'     => 'Developer',
