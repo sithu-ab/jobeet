@@ -6,6 +6,7 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Validator\ErrorElement;
 use Sonata\AdminBundle\Form\FormMapper;
+use Sonata\AdminBundle\Show\ShowMapper;
 
 class CategoryAdmin extends Admin
 {
@@ -43,7 +44,7 @@ class CategoryAdmin extends Admin
         ;
     }
 
-    protected function configureShowField(ShowMapper $showMapper)
+    protected function configureShowFields(ShowMapper $showMapper)
     {
         $showMapper
             ->add('name')
