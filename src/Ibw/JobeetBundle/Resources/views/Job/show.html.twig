@@ -14,6 +14,14 @@
         {% include 'IbwJobeetBundle:Job:admin.html.twig' with { job: entity } %}
     {% endif %}
     <div id="job">
+        {% if favourite_form is defined %}
+        <div align="right">
+            {{ form_start(favourite_form) }}
+            {{ form_widget(favourite_form) }}
+            {{ form_end(favourite_form )}}
+        </div>
+        {% endif %}
+
         <h1>{{ entity.company }}</h1>
         <h2>{{ entity.location }}</h2>
         <h3>

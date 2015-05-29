@@ -50,3 +50,8 @@ ibw_job_extend:
 ibw_job_search:
     path:     /search
     defaults: { _controller: "IbwJobeetBundle:Job:search" }
+
+ibw_job_favourite:
+    path:     /{id}/favourite
+    defaults: { _controller: "IbwJobeetBundle:Job:favourite" }
+    methods:  POST
