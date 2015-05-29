@@ -1,0 +1,31 @@
+ibw_jobeet_ibw_affiliate:
+    resource: "@IbwJobeetBundle/Resources/config/routing/affiliate.yml"
+    prefix:   /affiliate
+
+ibw_jobeet_homepage:
+    path:     /
+    defaults: { _controller: IbwJobeetBundle:Job:Index }
+
+IbwJobeetBundle_job:
+    resource: "@IbwJobeetBundle/Resources/config/routing/job.yml"
+    prefix:   /job
+
+IbwJobeetBundle_category:
+    pattern: /category/{slug}/{page}
+    defaults: { _controller: IbwJobeetBundle:Category:show, page: 1 }
+
+IbwJobeetBundle_api:
+    pattern: /api/{token}/jobs.{_format}
+    defaults: { _controller: IbwJobeetBundle:Api:list }
+    requirements:
+        _format: xml|json|yaml
+
+login:
+    pattern: /login
+    defaults: { _controller: IbwJobeetBundle:Default:login }
+
+login_check:
+    pattern: /login_check
+
+logout:
+    pattern: /logout

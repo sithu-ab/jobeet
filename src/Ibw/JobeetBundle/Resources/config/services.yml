@@ -1,0 +1,40 @@
+services:
+#    ibw_jobeet.example:
+#        class: Ibw\JobeetBundle\Example
+#        arguments: [@service_id, "plain_value", %parameter%]
+
+    ibw.jobeet.admin.category:
+        class: Ibw\JobeetBundle\Admin\CategoryAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: jobeet, label: Categories }
+        arguments:
+            - ~
+            - Ibw\JobeetBundle\Entity\Category
+            - 'IbwJobeetBundle:CategoryAdmin'
+
+    ibw.jobeet.admin.job:
+        class: Ibw\JobeetBundle\Admin\JobAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: jobeet, label: Jobs }
+        arguments:
+            - ~
+            - Ibw\JobeetBundle\Entity\Job
+            - 'IbwJobeetBundle:JobAdmin'
+#        calls:
+#            - [ setTemplate, [edit, SonataAdminBundle:CRUD:show.html.twig] ]
+
+    ibw.jobeet.admin.affiliate:
+        class: Ibw\JobeetBundle\Admin\AffiliateAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: jobeet, label: Affiliates }
+        arguments:
+            - ~
+            - Ibw\JobeetBundle\Entity\Affiliate
+            - 'IbwJobeetBundle:AffiliateAdmin'
+
+    ibw.jobeet.entity.job.container_aware:
+        class: Ibw\JobeetBundle\Doctrine\Event\Listener\JobListener
+        calls:
+            - [setContainer, ["@service_container"]]
+        tags:
+            - { name: doctrine.event_listener, event: postLoad }

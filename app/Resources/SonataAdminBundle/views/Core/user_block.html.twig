@@ -1,0 +1,4 @@
+{% block user_block %}
+    <li class="dropdown-header">{{ app.user.username }}</li>
+    <li><a href="{{ path('logout') }}" class="menu-item">Logout</a></li>
+{% endblock %}

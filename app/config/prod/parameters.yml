@@ -1,0 +1,18 @@
+# This file is auto-generated during the composer install
+parameters:
+    database_driver: pdo_mysql
+    database_host: localhost
+    database_port: 3306
+    database_name: jobeet
+    database_user: root
+    database_password: root
+
+    mailer_transport: smtp
+    mailer_host: localhost
+    #mailer_port: 25
+    mailer_user: dev@localhost.com
+    mailer_password: dev
+
+    locale: en
+
+    secret: 87b27632d95db9c44a208e7dfd3c3187928cafdc
