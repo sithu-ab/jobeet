@@ -27,6 +27,16 @@ class AppKernel extends Kernel
             new Sonata\BlockBundle\SonataBlockBundle(),
             new Sonata\CoreBundle\SonataCoreBundle(),
             new Sonata\DoctrineORMAdminBundle\SonataDoctrineORMAdminBundle(),
+            new Sonata\EasyExtendsBundle\SonataEasyExtendsBundle(),
+            // You have 2 options to initialize the SonataUserBundle in your AppKernel,
+            // you can select which bundle SonataUserBundle extends
+            // Most of the cases, you'll want to extend FOSUserBundle though ;)
+            // extend the ``FOSUserBundle``
+            new FOS\UserBundle\FOSUserBundle(),
+            new Sonata\UserBundle\SonataUserBundle('FOSUserBundle'),
+            // OR
+            // the bundle will NOT extend ``FOSUserBundle``
+            // new Sonata\UserBundle\SonataUserBundle(),
             // for Admin module, use EasyAdminBundle or SonataAdminBundle
         );
 
