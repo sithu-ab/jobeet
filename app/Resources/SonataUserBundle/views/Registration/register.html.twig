@@ -1,0 +1,11 @@
+{#
+
+This template overrides vendor\friendsofsymfony\user-bundle\FOS\UserBundle\Resources\views\Registration\register.html.twig
+FOSUserBundle:Registration:register_content.html.twig uses vendor\sonata-projct\user-bundle\Resources\views\Registration\register_content.html.twig
+
+#}
+{% extends "IbwJobeetBundle::layout.html.twig" %}
+
+{% block fos_user_content %}
+{% include "FOSUserBundle:Registration:register_content.html.twig" %}
+{% endblock fos_user_content %}
