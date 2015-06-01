@@ -465,6 +465,11 @@ class JobController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $query = $this->getRequest()->get('query');
+        // TODO: remove all no-printable characters
+        // $query = preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $query);
+        // $query = preg_replace('/[[:cntrl:]]/', '', $query);
+        $query = preg_replace("/[^A-Za-z0-9]/", "", $query);
+        $query .= '*';
 
         if (!$query) {
             if (!$request->isXmlHttpRequest()) {
