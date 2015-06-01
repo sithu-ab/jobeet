@@ -62,9 +62,6 @@ class JobController extends Controller
             $em->persist($entity);
             $em->flush();
 
-            // $form->get('submit')->isClicked()
-            // $form->get('preview')->isClicked()
-
             return $this->redirect($this->generateUrl('ibw_job_preview', array(
                 'company' => $entity->getCompanySlug(),
                 'location' => $entity->getLocationSlug(),
