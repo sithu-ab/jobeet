@@ -26,5 +26,11 @@ class JobListener
         if (method_exists($entity, 'setContainer')) {
             $entity->setContainer($this->container);
         }
+
+        $em = $eventArgs->getEntityManager();
+        $repository = $em->getRepository('IbwJobeetBundle:Job');
+        if (method_exists($repository, 'setContainer')) {
+            $repository->setContainer($this->container);
+        }
     }
 }

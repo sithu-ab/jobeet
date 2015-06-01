@@ -3,6 +3,8 @@
 namespace Ibw\JobeetBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+
 use Ibw\JobeetBundle\Entity\Job;
 
 /**
@@ -13,6 +15,19 @@ use Ibw\JobeetBundle\Entity\Job;
  */
 class JobRepository extends EntityRepository
 {
+    /**
+     * @var ContainerInterface
+     */
+    protected $container;
+
+    /**
+     * @param ContainerInterface $container
+     */
+    public function setContainer(ContainerInterface $container)
+    {
+        $this->container = $container;
+    }
+
     public function getActiveJobs($category_id = null, $max = null, $offset = null, $affiliate_id = null)
     {
         $qb = $this->createQueryBuilder('j')
