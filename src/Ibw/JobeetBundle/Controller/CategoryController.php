@@ -34,7 +34,7 @@ class CategoryController extends Controller
 
         //$activeJobs = $em->getRepository('IbwJobeetBundle:Job')->getActiveJobs($category->getId(), $limit_per_page, $offset);
 
-        list($activeJobs, $pagination) = $em->getRepository('IbwJobeetBundle:Job')->getActiveJobsWithPagination($this->get('knp_paginator'), $category->getId(), $limit_per_page, $page);
+        list($activeJobs, $pagination) = $em->getRepository('IbwJobeetBundle:Job')->getActiveJobsWithPagination($category->getId(), $limit_per_page, $page);
 
         $category->setActiveJobs($activeJobs);
 

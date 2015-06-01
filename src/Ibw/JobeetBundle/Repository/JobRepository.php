@@ -62,7 +62,7 @@ class JobRepository extends EntityRepository
         return $qb->getQuery()->getResult();
     }
 
-    public function getActiveJobsWithPagination($paginator, $category_id = null, $max = 10, $page = 1)
+    public function getActiveJobsWithPagination($category_id = null, $max = 10, $page = 1)
     {
         $qb = $this->createQueryBuilder('j')
             ->where('j.expires_at > :date')
@@ -76,6 +76,7 @@ class JobRepository extends EntityRepository
                 ->setParameter('category_id', $category_id);
         }
 
+        $paginator = $this->container->get('knp_paginator');
         $pagination = $paginator->paginate($qb, $page, $max);
 //        echo '<pre>';
 //        \Doctrine\Common\Util\Debug::dump($pagination, 2);
