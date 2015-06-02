@@ -32,9 +32,10 @@ services:
             - Ibw\JobeetBundle\Entity\Affiliate
             - 'IbwJobeetBundle:AffiliateAdmin'
 
-    ibw.jobeet.entity.job.container_aware:
-        class: Ibw\JobeetBundle\Listener\Event\JobListener
+    ibw.jobeet.event.mylistener:
+        class: Ibw\JobeetBundle\Listener\Event\MyListener
         calls:
             - [setContainer, ["@service_container"]]
         tags:
             - { name: doctrine.event_listener, event: postLoad }
+            - { name: doctrine.event_listener, event: prePersist }

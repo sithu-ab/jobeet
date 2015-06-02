@@ -6,14 +6,14 @@ use Doctrine\ORM\Event\LifecycleEventArgs;
 
 use Ibw\JobeetBundle\Entity\Job;
 
-class JobListener
+class MyListener
 {
     /** @var ContainerInterface */
     protected $container;
 
     /**
-    * @param ContainerInterface @container
-    */
+     * @param ContainerInterface @container
+     */
     public function setContainer(ContainerInterface $container)
     {
         $this->container = $container;
@@ -24,6 +24,24 @@ class JobListener
      */
     public function postLoad(LifecycleEventArgs $eventArgs)
     {
+        $this->injectContainer($eventArgs);
+    }
+
+    /**
+     * @param LifecycleEventArgs $eventArgs
+     */
+    public function prePersist(LifecycleEventArgs $eventArgs)
+    {
+        $this->injectContainer($eventArgs);
+    }
+
+    /**
+     * Inject the service container into Entity and Repository
+     *
+     * @param LifecycleEventArgs $eventArgs
+     */
+    protected function injectContainer(LifecycleEventArgs $eventArgs)
+    {
         $entity = $eventArgs->getEntity();
         if ($entity instanceof Job) {
             $entity->setContainer($this->container);
@@ -31,7 +49,7 @@ class JobListener
 
         $em = $eventArgs->getEntityManager();
         $repository = $em->getRepository('IbwJobeetBundle:Job');
-        if ($entity instanceof Job ) {
+        if ($entity instanceof Job) {
             $repository->setContainer($this->container);
         }
     }
