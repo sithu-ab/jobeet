@@ -5,6 +5,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 
 use Ibw\JobeetBundle\Entity\Job;
+use Ibw\JobeetBundle\Repository\JobRepository;
 
 class MyListener
 {
@@ -49,7 +50,7 @@ class MyListener
 
         $em = $eventArgs->getEntityManager();
         $repository = $em->getRepository('IbwJobeetBundle:Job');
-        if ($entity instanceof Job) {
+        if ($repository instanceof JobRepository) {
             $repository->setContainer($this->container);
         }
     }
