@@ -701,6 +701,10 @@ class Job
      */
     private function getThumbnail($image, $filterSet)
     {
+        if (!$this->container) {
+            return null;
+        }
+
         // RedirectResponse object
         $imagemanagerResponse = $this->container
             ->get('liip_imagine.controller')
@@ -737,7 +741,7 @@ class Job
         $path = $this->getWebTmpPath(); // domain relative path to full sized image
         $target = $this->getAbsolutePath(); // absolute path of saved thumbnail
 
-        if (file_exists($path)) {
+        if (file_exists($path) && $this->container) {
             $container = $this->container;                                  // the DI container
             $dataManager = $container->get('liip_imagine.data.manager');    // the data manager service
             $filterManager = $container->get('liip_imagine.filter.manager');// the filter manager service
