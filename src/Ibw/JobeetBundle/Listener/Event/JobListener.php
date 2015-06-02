@@ -1,8 +1,10 @@
 <?php
-namespace Ibw\JobeetBundle\Doctrine\Event\Listener;
+namespace Ibw\JobeetBundle\Listener\Event;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Doctrine\ORM\Event\LifecycleEventArgs;
+
+use Ibw\JobeetBundle\Entity\Job;
 
 class JobListener
 {
@@ -18,18 +20,18 @@ class JobListener
     }
 
     /**
-     * @ORM\PostLoad
+     * @param LifecycleEventArgs $eventArgs
      */
     public function postLoad(LifecycleEventArgs $eventArgs)
     {
         $entity = $eventArgs->getEntity();
-        if (method_exists($entity, 'setContainer')) {
+        if ($entity instanceof Job) {
             $entity->setContainer($this->container);
         }
 
         $em = $eventArgs->getEntityManager();
         $repository = $em->getRepository('IbwJobeetBundle:Job');
-        if (method_exists($repository, 'setContainer')) {
+        if ($entity instanceof Job ) {
             $repository->setContainer($this->container);
         }
     }

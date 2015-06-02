@@ -33,7 +33,7 @@ services:
             - 'IbwJobeetBundle:AffiliateAdmin'
 
     ibw.jobeet.entity.job.container_aware:
-        class: Ibw\JobeetBundle\Doctrine\Event\Listener\JobListener
+        class: Ibw\JobeetBundle\Listener\Event\JobListener
         calls:
             - [setContainer, ["@service_container"]]
         tags:
