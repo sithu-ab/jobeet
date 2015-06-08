@@ -1,0 +1,25 @@
+Ibw\JobeetBundle\Entity\Article:
+    type: entity
+    repositoryClass: Ibw\JobeetBundle\Repository\ArticleRepository
+    table: article
+    id:
+        id:
+            type: integer
+            generator: { strategy: AUTO }
+    fields:
+        slug:
+            type: string
+            length: 255
+        title:
+            type: string
+            length: 255
+        body:
+            type: text
+        created_at:
+            type: datetime
+        updated_at:
+            type: datetime
+            nullable: true
+    lifecycleCallbacks:
+        prePersist: [ setCreatedAtValue ]
+        preUpdate: [ setUpdatedAtValue ]
