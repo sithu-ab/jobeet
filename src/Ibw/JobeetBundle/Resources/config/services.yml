@@ -32,6 +32,15 @@ services:
             - Ibw\JobeetBundle\Entity\Affiliate
             - 'IbwJobeetBundle:AffiliateAdmin'
 
+    ibw.jobeet.admin.article:
+        class: Ibw\JobeetBundle\Admin\ArticleAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: jobeet, label: Articles }
+        arguments:
+            - ~
+            - Ibw\JobeetBundle\Entity\Article
+            - 'IbwJobeetBundle:ArticleAdmin'
+
     ibw.jobeet.event.mylistener:
         class: Ibw\JobeetBundle\Listener\Event\MyListener
         calls:
