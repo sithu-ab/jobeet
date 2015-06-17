@@ -88,6 +88,8 @@ parameters:
 # Sonata Admin Bundle Configuration
 sonata_admin:
     title: Jobeet Admin
+    options:
+        html5_validate: false
     dashboard:
         blocks:
             -
