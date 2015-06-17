@@ -33,3 +33,12 @@ Ibw\JobeetBundle\Entity\Affiliate:
         email:
             - NotBlank: ~
             - Email: ~
+
+Ibw\JobeetBundle\Entity\Article:
+    properties:
+        title:
+            - NotBlank: ~
+        slug:
+            - NotBlank: ~
+        body:
+            - NotBlank: ~
