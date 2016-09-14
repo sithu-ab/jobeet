@@ -89,8 +89,7 @@ class JobRepositoryTest extends WebTestCase
         }
     }
 
-    public function testGetActiveJobs()
-    {
+    public function testGetActiveJobs(){
         $query = $this->em->createQuery('SELECT c from IbwJobeetBundle:Category c');
         $categories = $query->getResult();
 
