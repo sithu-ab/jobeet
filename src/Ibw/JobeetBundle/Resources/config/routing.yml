@@ -19,13 +19,3 @@ IbwJobeetBundle_api:
     defaults: { _controller: IbwJobeetBundle:Api:list }
     requirements:
         _format: xml|json|yaml
-
-login:
-    pattern: /login
-    defaults: { _controller: IbwJobeetBundle:Default:login }
-
-login_check:
-    pattern: /login_check
-
-logout:
-    pattern: /logout

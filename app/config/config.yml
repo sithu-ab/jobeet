@@ -60,10 +60,17 @@ doctrine:
         #   2. Uncomment database_path in parameters.yml.dist
         #   3. Uncomment next line:
         #     path:     "%database_path%"
-
+        types:
+            json: Sonata\Doctrine\Types\JsonType
     orm:
         auto_generate_proxy_classes: "%kernel.debug%"
-        auto_mapping: true
+        entity_managers:
+            default:
+                mappings:
+                    IbwJobeetBundle: ~
+                    ApplicationSonataUserBundle: ~
+                    SonataUserBundle: ~
+                    FOSUserBundle: ~
 
 # Swiftmailer Configuration
 swiftmailer:
@@ -81,6 +88,8 @@ parameters:
 # Sonata Admin Bundle Configuration
 sonata_admin:
     title: Jobeet Admin
+    options:
+        html5_validate: false
     dashboard:
         blocks:
             -
@@ -113,6 +122,28 @@ sonata_block:
         sonata.block.service.action:
         sonata.block.service.rss:
         sonata.admin.block.search_result:
+
+sonata_user:
+    security_acl: true
+    manager_type: orm # can be orm or mongodb
+
+sonata_block:
+    blocks:
+        #...
+        sonata.user.block.menu:    # used to display the menu in profile pages
+        sonata.user.block.account: # used to display menu option (login option)
+
+fos_user:
+    db_driver:      orm # can be orm or odm
+    firewall_name:  main
+    user_class:     Application\Sonata\UserBundle\Entity\User
+
+    group:
+        group_class:   Application\Sonata\UserBundle\Entity\Group
+        group_manager: sonata.user.orm.group_manager # If you're using doctrine orm (use sonata.user.mongodb.user_manager for mongodb)
+
+    service:
+        user_manager: sonata.user.orm.user_manager # If you're using doctrine orm (use sonata.user.mongodb.group_manager for mongodb)
 
 # javiereguiluz/EasyAdminBundle Configuration
 easy_admin:
