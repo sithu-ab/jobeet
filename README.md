@@ -1,23 +1,42 @@
-jobeet
-------
+# Jobeet
 
 A Symfony project created on May 20, 2015, 5:17 am. This is a tutorial project followed to [jobeet.symfony.gr.jp](http://jobeet.symfony.gr.jp/).
 
-Enable PHP intl extension
-=========================
+## Installation
 
-- Open *php.ini* and Uncomment `extension=php_intl.dll`.
+Clone the repo:
+
+    cd /c/xampp/htdocs
+    git clone https://github.com/sithu-ab/jobeet.git
+    cd jobeet
+
+Install Dependencies using Composer:
+
+    composer install
+
+### Database Setup
+
+- Create a new database, e.g., `jobeet` which is the one you setup during `composer install`
+- Install the database using the command:
+
+        php app/console doctrine:schema:update --force
+
+- Install the sample data using the command:
+
+        php app/console doctrine:fixtures:load
+
+### Enable PHP intl extension
+
+- Open *php.ini* and remove comment from `extension=php_intl.dll`.
 - Restart Apache.
 
+### Virtural Host Configuration
 
-Virtural Host Configuration
-===========================
-
-Open `C:\xampp\apache\conf\extra\httpd-vhost.conf` and update it to have the settings below and then restart Apache.
+Open `C:\xampp\apache\conf\extra\httpd-vhost.conf` and update it to have the settings below and then **restart Apache**.
 
     <VirtualHost *>
         DocumentRoot "C:\xampp\htdocs"
-            ServerName localhost
+        ServerName localhost
     </VirtualHost>
 
     # ....
@@ -60,4 +79,6 @@ Update the file on your desktop to add
 
 Copy and replace to `C:\Windows\System32\drivers\etc\hosts`
 
-Browse `http://jobeet.local/app_dev.php`
+Browse
+- `http://jobeet.local/app_dev.php` for development mode
+- `http://jobeet.local/` for production mode
